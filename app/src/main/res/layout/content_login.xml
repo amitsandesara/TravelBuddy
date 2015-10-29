@@ -9,4 +9,26 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_login" tools:context="com.nyu.cs9033.travelbuddy.LoginActivity">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Just for test"
+            android:id="@+id/test"
+            android:textSize="20sp"
+            />
+        <TextClock
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textClock"
+            android:layout_gravity="right"
+            android:layout_alignRight="@+id/test"
+            android:textSize="30sp" />
+    </LinearLayout>
 </RelativeLayout>
