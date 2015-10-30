@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         startLoginActivity();
     }
 
+
     private void startLoginActivity() {
         new Handler().postDelayed(new Runnable() {
             @Override
