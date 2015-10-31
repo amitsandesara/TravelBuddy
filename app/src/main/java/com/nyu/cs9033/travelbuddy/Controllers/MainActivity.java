@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.ImageView;
 
 import com.nyu.cs9033.travelbuddy.R;
@@ -23,13 +25,21 @@ public class MainActivity extends AppCompatActivity {
         appLogo = (ImageView) findViewById(R.id.Logo);
         appLogo.setImageResource(R.drawable.tbletters);
 
+
+
         if (googlePlusLogin)
         {
             // Build GoogleApiClient to request access to the basic user profile
-
         }
         else
             startLoginActivity();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     private void startLoginActivity() {

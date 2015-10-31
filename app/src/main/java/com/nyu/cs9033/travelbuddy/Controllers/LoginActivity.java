@@ -1,6 +1,5 @@
 package com.nyu.cs9033.travelbuddy.Controllers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.graphics.Bitmap;
@@ -8,7 +7,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -31,13 +34,14 @@ import com.nyu.cs9033.travelbuddy.R;
 
 import java.io.InputStream;
 
-public class LoginActivity extends Activity implements
+public class LoginActivity extends AppCompatActivity implements
         ConnectionCallbacks, OnConnectionFailedListener, OnClickListener {
 
     /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 0;
 
     private static final String PIC_SIZE = "400";
+    private static final String TAG_GooglePlusConnection = "GooglePlusConnection";
 
     /* Client used to interact with Google APIs. */
     private GoogleApiClient mGoogleApiClient;
@@ -66,11 +70,25 @@ public class LoginActivity extends Activity implements
     private Button bShare;
     private Button bRevoke;
     private Button goHome;
+    public boolean UserSignedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        android.support.v7.app.ActionBar supportActionBar = getSupportActionBar();
+        setSupportActionBar(toolbar);
+        if (supportActionBar != null) {
+            supportActionBar.setLogo(R.drawable.tbletters);
+        }
+
+        if (!mSignInClicked)
+        {
+            final Intent goToHome = new Intent(getApplicationContext(), HomeActivity.class);
+            startActivity(goToHome);
+        }
+
 
 //declaring variables
         bSignIn = (SignInButton) findViewById(R.id.sign_in_button);
@@ -83,6 +101,13 @@ public class LoginActivity extends Activity implements
         proEmail = (TextView) findViewById(R.id.pro_Email);
         goHome = (Button) findViewById(R.id.goToHome);
 
+        bSignIn.setVisibility(View.VISIBLE);
+        bSignOut.setVisibility(View.GONE);
+        bShare.setVisibility(View.GONE);
+        bRevoke.setVisibility(View.GONE);
+        proLayout.setVisibility(View.GONE);
+        goHome.setVisibility(View.GONE);
+
 //button Onlicklisteners
         bSignIn.setOnClickListener(this);
         bSignOut.setOnClickListener(this);
@@ -94,7 +119,6 @@ public class LoginActivity extends Activity implements
             public void onClick(View v) {
                 final Intent goToHome = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(goToHome);
-                finish();
             }
         });
 
@@ -178,6 +202,7 @@ public class LoginActivity extends Activity implements
     private void signIn() {
         if(!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
+            UserSignedIn =  true;
             resolveSignInError();
         }
     }
@@ -244,7 +269,19 @@ public class LoginActivity extends Activity implements
     public void onConnected(Bundle arg0) {
 // TODO Auto-generated method stub
         mSignInClicked = false;
-        Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+        Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+        String personName = currentPerson.getDisplayName();
+        final Toast toast = Toast.makeText(getApplicationContext(), personName +" is connected!", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 150);
+        toast.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toast.cancel();
+            }
+        }, 500);
+        Log.i(TAG_GooglePlusConnection, currentPerson + " is connected!");
 
 //Updating Profile Information
         UpdateProfile();
@@ -261,6 +298,7 @@ public class LoginActivity extends Activity implements
             bShare.setVisibility(View.VISIBLE);
             bRevoke.setVisibility(View.VISIBLE);
             proLayout.setVisibility(View.VISIBLE);
+            goHome.setVisibility(View.VISIBLE);
 
         }
         else{
@@ -269,6 +307,7 @@ public class LoginActivity extends Activity implements
             bShare.setVisibility(View.GONE);
             bRevoke.setVisibility(View.GONE);
             proLayout.setVisibility(View.GONE);
+            goHome.setVisibility(View.GONE);
         }
 
     }
