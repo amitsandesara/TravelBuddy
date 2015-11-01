@@ -2,13 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".HomeActivity">
+    tools:context=".HomeActivity"
+    >
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="1"
         app:showAsAction="never"
-        android:title="@string/show_settings" />
+        android:title="@string/show_settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        android:actionViewClass="android.widget.SearchView"
+        />
 
     <item
         android:id="@+id/shareApplication"

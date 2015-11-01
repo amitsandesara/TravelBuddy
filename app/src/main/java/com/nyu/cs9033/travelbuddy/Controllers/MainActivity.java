@@ -21,7 +21,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+//Logo in Action bar
+        getSupportActionBar().setIcon(R.drawable.tbletters);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//Logo in UI
         appLogo = (ImageView) findViewById(R.id.Logo);
         appLogo.setImageResource(R.drawable.tbletters);
 

@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements
         if (!mSignInClicked)
         {
             final Intent goToHome = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(goToHome);
+  //          startActivity(goToHome);
         }
 
 
