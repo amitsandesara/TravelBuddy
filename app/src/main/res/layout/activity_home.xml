@@ -15,14 +15,14 @@
     </FrameLayout>
 
     <ListView
-        android:layout_width="240sp"
+        android:layout_width="280sp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:id="@+id/drawerList"
         android:choiceMode="singleChoice"
         android:layout_alignParentTop="true"
         android:cacheColorHint="@android:color/transparent"
-        android:background="#383838"
+        android:background="#b3b3b3"
         android:foreground="#35c6ff">
 
     </ListView>
