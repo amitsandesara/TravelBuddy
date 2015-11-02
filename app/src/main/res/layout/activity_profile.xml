@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.nyu.cs9033.travelbuddy.Controllers.ProfileActivity">
+
+
+    <ImageView
+        android:layout_width="150sp"
+        android:layout_height="150sp"
+        android:id="@+id/profilePhoto"
+        android:layout_marginTop="15sp"
+        android:layout_margin="10sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewProfile"
+        android:layout_below="@+id/profilePhoto"
+        android:layout_centerHorizontal="true"
+        >
+
+
+        <TextView
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileName"
+            android:textSize="25sp"
+            android:layout_marginTop="10sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userEmail"
+            android:textColor="#000000"
+            android:textStyle="normal"
+            android:layout_marginTop="10sp"
+            android:textSize="20sp"
+            android:layout_below="@+id/profileName"
+            android:layout_centerHorizontal="true"
+            />
+
+        <Button
+            android:layout_width="180sp"
+            android:layout_height="wrap_content"
+            android:text="Edit Profile"
+            android:layout_marginTop="20sp"
+            android:gravity="center_horizontal"
+            android:textAllCaps="true"
+            android:id="@+id/btnEditProfile"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/userEmail"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editProfile"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
+        android:layout_marginTop="20sp"
+        android:layout_below="@+id/viewProfile">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"
+            android:hint="Display Name"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/editName"
+
+            />
+
+
+        <Button
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20sp"
+            android:layout_below="@+id/editName"
+            android:id="@+id/editCancel"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:text="Cancel"
+            android:textAllCaps="true"/>
+
+        <Button
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editName"
+            android:layout_margin="20sp"
+            android:textStyle="bold"
+            android:text="Save"
+            android:textAllCaps="true"
+            android:layout_toRightOf="@+id/editCancel"
+            android:id="@+id/saveProfile"/>
+    </RelativeLayout>
+
+</RelativeLayout>

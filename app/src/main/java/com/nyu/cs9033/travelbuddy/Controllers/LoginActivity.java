@@ -2,24 +2,23 @@ package com.nyu.cs9033.travelbuddy.Controllers;
 
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -71,22 +70,79 @@ public class LoginActivity extends AppCompatActivity implements
     private Button bRevoke;
     private Button goHome;
     public boolean UserSignedIn = false;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+    private Bitmap GProfilePhoto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        android.support.v7.app.ActionBar supportActionBar = getSupportActionBar();
+//        setSupportActionBar(toolbar);
+
+//        if (supportActionBar != null) {
+//            supportActionBar.setLogo(R.drawable.tbletters);
+//        }
+
+//        FacebookSdk.sdkInitialize(getApplicationContext());
+//        callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_login);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        android.support.v7.app.ActionBar supportActionBar = getSupportActionBar();
-        setSupportActionBar(toolbar);
-        if (supportActionBar != null) {
-            supportActionBar.setLogo(R.drawable.tbletters);
-        }
+      //  loginButton = (LoginButton) findViewById(R.id.fbLogin_button);
+
+
+//        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//                // App code
+//                mSignInClicked= false;
+//                UserSignedIn= true;
+//                AccessToken accessToken = loginResult.getAccessToken();
+//                Log.e("FB", String.valueOf(accessToken));
+//                Profile fbProfile = Profile.getCurrentProfile();
+//                proName = (TextView) findViewById(R.id.pro_Name);
+//                proName.setText(fbProfile.getName());
+//                proLayout.setVisibility(View.VISIBLE);
+//                bSignOut = (Button) findViewById(R.id.sign_out);
+//                bSignOut.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        callFacebookLogout();
+//                    }
+//                });
+//
+//
+//                final Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+
+            /**
+             * Logout From Facebook
+             */
+//            public void callFacebookLogout() {
+//                LoginManager.getInstance().logOut();
+//                proLayout.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//                // App code
+//            }
+//
+//            @Override
+//            public void onError(FacebookException exception) {
+//                // App code
+//            }
+//
+//        });
+
 
         if (!mSignInClicked)
         {
-            final Intent goToHome = new Intent(getApplicationContext(), HomeActivity.class);
-  //          startActivity(goToHome);
+//            final Intent goToHome = new Intent(getApplicationContext(), HomeActivity.class);
+//            startActivity(goToHome);
         }
 
 
@@ -132,6 +188,8 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
 
+
+
     @Override
     public void onClick(View v) {
 // TODO Auto-generated method stub
@@ -157,7 +215,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private void revokeAccess() {
-        Log.i("Revoke","Revoke Access");
+        Log.i("Revoke", "Revoke Access");
 // Prior to disconnecting, run clearDefaultAccount().
         Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
         Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
@@ -168,7 +226,9 @@ public class LoginActivity extends AppCompatActivity implements
 // mGoogleApiClient is now disconnected and access has been revoked.
 // Trigger app logic to comply with the developer policies
 
+                        mGoogleApiClient.disconnect();
                         mGoogleApiClient.connect();
+
                         UpdateLayout(false);
                     }
 
@@ -181,15 +241,15 @@ public class LoginActivity extends AppCompatActivity implements
 // Launch the Google+ share dialog with attribution to your app.
         Intent shareIntent = new PlusShare.Builder(this)
                 .setType("text/plain")
-                .setText("Sign in with Google+ Tutorial")
-                .setContentUrl(Uri.parse("http://blog.arunsharma.me/"))
+                .setText("Know more about me")
+                .setContentUrl(Uri.parse("http://www.amitsandesara.com"))
                 .getIntent();
 
         startActivityForResult(shareIntent, 0);
 
     }
 
-    private void signOut() {
+    protected void signOut() {
         if (mGoogleApiClient.isConnected()) {
             Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
             mGoogleApiClient.disconnect();
@@ -199,10 +259,10 @@ public class LoginActivity extends AppCompatActivity implements
 
     }
 
+
     private void signIn() {
         if(!mGoogleApiClient.isConnecting()) {
             mSignInClicked = true;
-            UserSignedIn =  true;
             resolveSignInError();
         }
     }
@@ -271,22 +331,14 @@ public class LoginActivity extends AppCompatActivity implements
         mSignInClicked = false;
         Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
         String personName = currentPerson.getDisplayName();
-        final Toast toast = Toast.makeText(getApplicationContext(), personName +" is connected!", Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 150);
-        toast.show();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                toast.cancel();
-            }
-        }, 500);
-        Log.i(TAG_GooglePlusConnection, currentPerson + " is connected!");
+
+        Log.i(TAG_GooglePlusConnection, personName + " is connected!");
 
 //Updating Profile Information
         UpdateProfile();
 //Updating Layout
         UpdateLayout(true);
+
     }
 
     private void UpdateLayout(boolean signinStatus) {
@@ -297,7 +349,7 @@ public class LoginActivity extends AppCompatActivity implements
             bSignOut.setVisibility(View.VISIBLE);
             bShare.setVisibility(View.VISIBLE);
             bRevoke.setVisibility(View.VISIBLE);
-            proLayout.setVisibility(View.VISIBLE);
+            //proLayout.setVisibility(View.VISIBLE);
             goHome.setVisibility(View.VISIBLE);
 
         }
@@ -306,7 +358,7 @@ public class LoginActivity extends AppCompatActivity implements
             bSignOut.setVisibility(View.GONE);
             bShare.setVisibility(View.GONE);
             bRevoke.setVisibility(View.GONE);
-            proLayout.setVisibility(View.GONE);
+            //proLayout.setVisibility(View.GONE);
             goHome.setVisibility(View.GONE);
         }
 
@@ -321,6 +373,15 @@ public class LoginActivity extends AppCompatActivity implements
             String personGooglePlusProfile = currentPerson.getUrl();
             String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
+            SharedPreferences googlePlusProfile = getSharedPreferences("Google+", MODE_PRIVATE);
+            SharedPreferences.Editor spEditor = googlePlusProfile.edit();
+            spEditor.putString("GDisplayName", personName);
+            spEditor.putString("GEmail", email);
+            spEditor.putString("GProfilePicURL", personPhoto);
+            spEditor.commit();
+
+            Log.i(TAG_GooglePlusConnection, personName);
+            Log.i(TAG_GooglePlusConnection, email);
             proName.setText(personName);
             proEmail.setText(email);
 
@@ -328,9 +389,7 @@ public class LoginActivity extends AppCompatActivity implements
                     + PIC_SIZE;
 
             new UpdateImage().execute(personPhoto);
-
         }
-
     }
 
     private class UpdateImage extends AsyncTask<String, Void, Bitmap> {
@@ -355,8 +414,8 @@ public class LoginActivity extends AppCompatActivity implements
         @Override
         protected void onPostExecute(Bitmap result) {
 // Set the bitmap into ImageView
+            GProfilePhoto = result;
             proPic.setImageBitmap(result);
-
         }
     }
 

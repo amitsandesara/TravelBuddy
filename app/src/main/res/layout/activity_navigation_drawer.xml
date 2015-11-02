@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.DrawerLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_gravity="start"
+tools:context=".Controllers.NavigationDrawer"
+android:id="@+id/defaultDrawer">
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawerFrameLayout">
+
+</FrameLayout>
+
+<ExpandableListView
+    android:layout_width="280sp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:id="@+id/drawerList"
+    android:choiceMode="singleChoice"
+    android:layout_alignParentTop="true"
+    android:cacheColorHint="@android:color/transparent"
+    android:background="#b3b3b3"
+    android:foreground="#35c6ff">
+
+</ExpandableListView>
+
+
+</android.support.v4.widget.DrawerLayout>

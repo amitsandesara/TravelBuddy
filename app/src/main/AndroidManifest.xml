@@ -16,12 +16,26 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
 
         <activity
             android:name=".Controllers.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:label="@string/app_name" >
 
+            <!-- android:theme="@style/AppTheme.NoActionBar" > -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
         <activity
@@ -34,16 +48,17 @@
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" >
         </activity>
+        <activity
+            android:name=".Controllers.HomeActivity"
+            android:icon="@drawable/ic_home_white"
+            android:label="@string/title_activity_home" >
 
-        <activity android:name=".Controllers.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:icon="@drawable/ic_home_white">
+        </activity>
+        <activity android:name=".Controllers.ProfileActivity"
+            android:label="@string/profile">
+        </activity>
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".Controllers.NavigationDrawer">
         </activity>
     </application>
 

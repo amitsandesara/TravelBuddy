@@ -41,6 +41,7 @@
     <string name="drawer_close">Close Navigation Drawer</string>
 
     <string-array name="navigationDrawer" >
+        <item>Home</item>
         <item>Trips</item>
         <item>Friends</item>
         <item>Profile</item>
@@ -50,6 +51,7 @@
 
     </string-array>
 
-
+    <string name="facebook_app_id">764399283671598</string>
+    <string name="profile">Profile</string>
 
 </resources>

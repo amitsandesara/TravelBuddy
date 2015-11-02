@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    tools:context=".Controllers.HomeActivity"
+    tools:context=".Controllers.NavigationDrawer"
     android:id="@+id/defaultDrawer">
 
     <FrameLayout
