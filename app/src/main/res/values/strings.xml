@@ -53,5 +53,9 @@
 
     <string name="facebook_app_id">764399283671598</string>
     <string name="profile">Profile</string>
+    <string name="title_activity_test">Test</string>
+    <string name="createTrip">Create a Trip</string>
+    <string name="btncreatetrip">Create Trip</string>
+    <string name="title_activity_create_trip">Trips</string>
 
 </resources>

@@ -54,7 +54,6 @@
             android:layout_height="wrap_content"
             android:text="Edit Profile"
             android:layout_marginTop="20sp"
-            android:gravity="center_horizontal"
             android:textAllCaps="true"
             android:id="@+id/btnEditProfile"
             android:layout_centerHorizontal="true"
@@ -88,7 +87,6 @@
             android:layout_margin="20sp"
             android:layout_below="@+id/editName"
             android:id="@+id/editCancel"
-            android:gravity="center_horizontal"
             android:textStyle="bold"
             android:text="Cancel"
             android:textAllCaps="true"/>

@@ -39,6 +39,8 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.defaultDrawer);
         drawerListner = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
@@ -55,7 +57,7 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         drawerLayout.setDrawerListener(drawerListner);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_home_white);
+//        getSupportActionBar().setIcon(R.drawable.ic_home_white);
 
         ListView listView = (ListView) findViewById(R.id.drawerList);
        // listView.setOnItemClickListener(new DrawerItemClickListener());
@@ -64,8 +66,6 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         MyAdapterForDrawer drawerAdapter = new MyAdapterForDrawer(this);
         listView.setAdapter(drawerAdapter);
         listView.setOnItemClickListener(this);
-
-
     }
 
     @Override
@@ -79,7 +79,6 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_home, menu);
         return true;
-
     }
 
     @Override
@@ -138,18 +137,47 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
             String iconForSelectedDrawerItem = appDrawer[position];
             switch (iconForSelectedDrawerItem)
             {
-                case "Trips":
-                {
+                case "Home": {
                     getSupportActionBar().setIcon(R.drawable.ic_home_black);
                     selectTitle(appDrawer[position]);
                     break;
                 }
 
+                case "Trips":
+                {
+//                    getSupportActionBar().setIcon(R.drawable.ic_airplanemode_active_black_24dp);
+//                    selectTitle(appDrawer[position]);
+                    final Intent intent = new Intent(HomeActivity.this, CreateTripActivity.class);
+                    startActivity(intent);
+                    break;
+                }
+
+                case "Friends":
+                {
+                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
+                    selectTitle(appDrawer[position]);
+                }
+
                 case "Profile":
                 {
 //                    setContentView(R.layout.activity_profile);
+                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
                     final Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
                     startActivity(intent);
+                    break;
+                }
+
+                case "Recommended Trips":
+                {
+                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
+                    selectTitle(appDrawer[position]);
+                    break;
+                }
+
+                case "Favorites":
+                {
+                    getSupportActionBar().setIcon(R.drawable.ic_favorite_black_24dp);
+                    selectTitle(appDrawer[position]);
                     break;
                 }
 
@@ -214,7 +242,7 @@ class MyAdapterForDrawer extends BaseAdapter{
 
     String[] drawerItems;
     private Context context;
-    int[] icons = {R.drawable.ic_home_black,R.drawable.ic_airplanemode_active_black_24dp, R.drawable.ic_settings_black_24dp, R.drawable.ic_favorite_black_24dp, R.drawable.ic_list_black_24dp, R.drawable.ic_favorite_black_24dp, R.drawable.ic_power_settings_new_black_24dp};
+    int[] icons = {R.drawable.ic_home_black,R.drawable.ic_airplanemode_active_black_24dp, R.drawable.ic_contacts_black_24dp, R.drawable.ic_account_circle_black_24dp, R.drawable.ic_stars_black_24dp, R.drawable.ic_favorite_black_24dp, R.drawable.ic_power_settings_new_black_24dp};
     public MyAdapterForDrawer(Context context){
         this.context = context;
         drawerItems = context.getResources().getStringArray(R.array.navigationDrawer);

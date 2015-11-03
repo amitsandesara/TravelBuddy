@@ -9,6 +9,8 @@ import android.view.MenuInflater;
 import android.widget.ImageView;
 
 import com.nyu.cs9033.travelbuddy.R;
+import com.parse.Parse;
+import com.parse.ParseInstallation;
 
 public class MainActivity extends AppCompatActivity {
     
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
+        getSupportActionBar().setIcon(null);
 //Logo in Action bar
 
         if (getSupportActionBar() != null) {
@@ -30,7 +33,12 @@ public class MainActivity extends AppCompatActivity {
 //Logo in UI
 //        appLogo = (ImageView) findViewById(R.id.Logo);
 //        appLogo.setImageResource(R.drawable.tbletters);
-//
+
+// Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "ME4oPzD9NyAwKrGB8hNnkQCCRbYjdb8Bd2YShI6B", "IvKnCjeM6ulQYVs6ZWd9n0V9tqgWdgFJsEBOHiCe");
+       // Parse.initialize(this, "ME4oPzD9NyAwKrGB8hNnkQCCRbYjdb8Bd2YShI6B", "IvKnCjeM6ulQYVs6ZWd9n0V9tqgWdgFJsEBOHiCe");
+        ParseInstallation.getCurrentInstallation().saveInBackground();
 
 
 
