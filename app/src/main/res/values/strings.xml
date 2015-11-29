@@ -51,6 +51,17 @@
 
     </string-array>
 
+    <string name="txtTitle">Travel Buddy</string>
+    <string name="hintUsername">Enter Username..</string>
+    <string name="hintEmail">Enter email address</string>
+    <string name="or">or</string>
+    <string name="hintPassword">Enter Password..</string>
+    <string name="btnLogin">Log in using email</string>
+    <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_dispatch">DispatchActivity</string>
+    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="btnSignup">New User?Signup using email</string>
+
     <string name="facebook_app_id">764399283671598</string>
     <string name="profile">Profile</string>
     <string name="title_activity_test">Test</string>
