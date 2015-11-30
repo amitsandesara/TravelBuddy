@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,17 +79,20 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        android.support.v7.app.ActionBar supportActionBar = getSupportActionBar();
-//        setSupportActionBar(toolbar);
-
-//        if (supportActionBar != null) {
-//            supportActionBar.setLogo(R.drawable.tbletters);
+        setContentView(R.layout.activity_login);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+////        android.support.v7.app.ActionBar supportActionBar = getSupportActionBar();
+        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.login);
+        getSupportActionBar().setTitle("  Login");
+//        if (toolbar != null) {
+//            getSupportActionBar().setLogo(R.drawable.tbletters);
 //        }
 
 //        FacebookSdk.sdkInitialize(getApplicationContext());
 //        callbackManager = CallbackManager.Factory.create();
-        setContentView(R.layout.activity_login);
+
       //  loginButton = (LoginButton) findViewById(R.id.fbLogin_button);
 
 

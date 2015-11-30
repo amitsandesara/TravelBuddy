@@ -1,10 +1,27 @@
-<android.support.v4.widget.DrawerLayout
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:fitsSystemWindows="true"
+    tools:context="com.nyu.cs9033.travelbuddy.Controllers.HomeActivity">
+
+    <android.support.design.widget.AppBarLayout android:layout_height="wrap_content"
+        android:layout_width="match_parent" android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark" app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_home" />
+    <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    tools:context=".Controllers.NavigationDrawer"
+    tools:context=".Controllers.HomeActivity"
     android:id="@+id/defaultDrawer">
 
     <FrameLayout
@@ -20,6 +37,7 @@
         android:layout_gravity="start"
         android:id="@+id/drawerList"
         android:choiceMode="singleChoice"
+        android:layout_marginTop="55sp"
         android:layout_alignParentTop="true"
         android:cacheColorHint="@android:color/transparent"
         android:background="#b3b3b3"
@@ -29,3 +47,4 @@
 
 
 </android.support.v4.widget.DrawerLayout>
+    </android.support.design.widget.CoordinatorLayout>

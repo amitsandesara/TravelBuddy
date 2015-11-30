@@ -1,11 +1,12 @@
 package com.nyu.cs9033.travelbuddy.Models;
 
-import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
-public class Trip implements Parcelable {
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+@ParseClassName("Trips")
+public class Trips extends ParseObject implements Parcelable {
 	
 	// Member fields should exist here, what else do you need for a trip?
 	// Please add additional fields
@@ -16,7 +17,7 @@ public class Trip implements Parcelable {
 	private String friends;
 	private String createdBy;
 	private byte[] destination;
-    private static final String TAG = "Trip";
+    private static final String TAG = "Trips";
 
 
 	public String getTrip_Location() {
@@ -62,28 +63,28 @@ public class Trip implements Parcelable {
 	/**
 	 * Parcelable creator. Do not modify this function.
 	 */
-	public static final Creator<Trip> CREATOR = new Creator<Trip>() {
-		public Trip createFromParcel(Parcel p) {
-			return new Trip(p);
+	public static final Creator<Trips> CREATOR = new Creator<Trips>() {
+		public Trips createFromParcel(Parcel p) {
+			return new Trips(p);
 		}
 
-		public Trip[] newArray(int size) {
-			return new Trip[size];
+		public Trips[] newArray(int size) {
+			return new Trips[size];
 		}
 	};
 	
 	/**
-	 * Create a Trip model object from a Parcel. This
+	 * Create a Trips model object from a Parcel. This
 	 * function is called via the Parcelable creator.
 	 * 
 	 * @param p The Parcel used to populate the
 	 * Model fields.
 	 */
 
-	public Trip(){
+	public Trips(){
 	}
 
-	public Trip(Parcel p) {
+	public Trips(Parcel p) {
 		//trip_Name = p.readString();
 		trip_Location = p.readString();
 		trip_Details = p.readString();
@@ -94,12 +95,12 @@ public class Trip implements Parcelable {
 	}
 	
 	/**
-	 * Create a Trip model object from arguments
+	 * Create a Trips model object from arguments
 	 *
 	 * @param name  Add arbitrary number of arguments to
-	 * instantiate Trip class based on member variables.
+	 * instantiate Trips class based on member variables.
 	 */
-	public Trip(String trip_Location, String trip_Details, String trip_Date, String friends, String createdBy) {
+	public Trips(String trip_Location, String trip_Details, String trip_Date, String friends, String createdBy) {
 		//this.trip_Name = trip_Name;
 		this.trip_Location = trip_Location;
 		this.trip_Details = trip_Details;
@@ -111,7 +112,7 @@ public class Trip implements Parcelable {
 	}
 
 	/**
-	 * Serialize Trip object by using writeToParcel. 
+	 * Serialize Trips object by using writeToParcel.
 	 * This function is automatically called by the
 	 * system when the object is serialized.
 	 * 

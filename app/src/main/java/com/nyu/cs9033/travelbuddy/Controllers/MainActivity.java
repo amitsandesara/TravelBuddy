@@ -8,9 +8,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.ImageView;
 
+import com.nyu.cs9033.travelbuddy.Models.Trips;
 import com.nyu.cs9033.travelbuddy.R;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 
 public class MainActivity extends AppCompatActivity {
     
@@ -22,25 +24,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
-        getSupportActionBar().setIcon(null);
-//Logo in Action bar
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setIcon(R.drawable.tbletters);
-            getSupportActionBar().setDisplayUseLogoEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
+////Logo in Action bar
+//
+//        if (getSupportActionBar() != null) {
+//            getSupportActionBar().setIcon(R.drawable.tbletters);
+//            getSupportActionBar().setDisplayUseLogoEnabled(true);
+//            getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        }
 //Logo in UI
 //        appLogo = (ImageView) findViewById(R.id.Logo);
 //        appLogo.setImageResource(R.drawable.tbletters);
 
 // Enable Local Datastore.
+        ParseObject.registerSubclass(Trips.class);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "ME4oPzD9NyAwKrGB8hNnkQCCRbYjdb8Bd2YShI6B", "IvKnCjeM6ulQYVs6ZWd9n0V9tqgWdgFJsEBOHiCe");
-       // Parse.initialize(this, "ME4oPzD9NyAwKrGB8hNnkQCCRbYjdb8Bd2YShI6B", "IvKnCjeM6ulQYVs6ZWd9n0V9tqgWdgFJsEBOHiCe");
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
-
+//        ParseObject testObject = new ParseObject("TestObject");
+//        testObject.put("foo", "bar");
+//        testObject.saveInBackground();
 
         if (googlePlusLogin)
         {
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(mainIntent);
                 finish();
             }
-        }, 1500);
+        }, 1200);
 
 
     }

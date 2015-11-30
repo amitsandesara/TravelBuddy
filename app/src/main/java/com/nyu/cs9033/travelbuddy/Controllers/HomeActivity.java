@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,20 +29,20 @@ import android.widget.Toast;
 
 import com.nyu.cs9033.travelbuddy.R;
 
-public class HomeActivity extends AppCompatActivity implements OnItemClickListener {
 
+public class HomeActivity extends AppCompatActivity implements OnItemClickListener{
     private static final String TAG_Menu = "ACTION MENU ";
     private DrawerLayout drawerLayout;
     private String[] appDrawer;
     private ActionBarDrawerToggle drawerListner;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.defaultDrawer);
         drawerListner = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
@@ -55,12 +56,12 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
             }
         };
         drawerLayout.setDrawerListener(drawerListner);
-        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setIcon(R.drawable.ic_home_white);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_home_white);
 
         ListView listView = (ListView) findViewById(R.id.drawerList);
-       // listView.setOnItemClickListener(new DrawerItemClickListener());
+        // listView.setOnItemClickListener(new DrawerItemClickListener());
         appDrawer = getResources().getStringArray(R.array.navigationDrawer);
 //        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_expandable_list_item_1, appDrawer));
         MyAdapterForDrawer drawerAdapter = new MyAdapterForDrawer(this);
@@ -131,6 +132,9 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+//        Fragment fragment = null;
+//
+//        Class fragmentClass = null;
         if (position == appDrawer.length)
         {}
         else {
@@ -138,17 +142,15 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
             switch (iconForSelectedDrawerItem)
             {
                 case "Home": {
-                    getSupportActionBar().setIcon(R.drawable.ic_home_black);
-                    selectTitle(appDrawer[position]);
+//                    fragmentClass = HomeActivityFragment.class;
                     break;
                 }
 
                 case "Trips":
                 {
-//                    getSupportActionBar().setIcon(R.drawable.ic_airplanemode_active_black_24dp);
-//                    selectTitle(appDrawer[position]);
-                    final Intent intent = new Intent(HomeActivity.this, CreateTripActivity.class);
-                    startActivity(intent);
+//                    fragmentClass = CreateTripActivity.class;
+                    Intent i = new Intent(this, CreateTripActivity.class);
+                    startActivity(i);
                     break;
                 }
 
@@ -183,7 +185,8 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
 
                 case "Logout":
                 {
-                    getSupportActionBar().setIcon(R.drawable.ic_power_settings_new_black_24dp);
+                    Log.i(TAG_Menu, "Logout clicked");
+//                    getSupportActionBar().setIcon(R.drawable.ic_power_settings_new_black_24dp);
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
                     builder.setTitle("Confirm");
@@ -226,12 +229,28 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
                     break;
                 }
             }
-            //getSupportActionBar().setIcon(R.drawable.ic_home_white);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+////
+//            getSupportActionBar().setIcon(R.drawable.ic_home_white);
+//            try {
+//                fragment = (Fragment) fragmentClass.newInstance();
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+
+            // Insert the fragment by replacing any existing fragment
+//            FragmentManager fragmentManager = getSupportFragmentManager();
+//            fragmentManager.beginTransaction().replace(R.id.home_fragment, fragment).commit();
+
+            // Highlight the selected item, update the title, and close the drawer
+//            setTitle(appDrawer.getTitle());
             drawerLayout.setSelected(true);
             drawerLayout.closeDrawers();
 
         }
     }
+
 
     public void selectTitle(String title) {
         getSupportActionBar().setTitle(title);

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="40sp"
+    android:background="?attr/colorPrimaryDark">
+
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent" />
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="20sp"-->
+        <!--android:id="@+id/viewTrip_createdBy"-->
+        <!--android:text=""-->
+        <!--android:textStyle="bold" />-->
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="20sp"-->
+        <!--android:layout_alignRight="@+id/viewTrip_createdBy"-->
+        <!--android:id="@+id/parse_textView"-->
+        <!--android:text=" created a trip "-->
+        <!--/>-->
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="20sp"-->
+        <!--android:layout_alignBottom="@+id/parse_textView"-->
+        <!--android:id="@+id/Date"-->
+        <!--android:text=""-->
+        <!--/>-->
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="20sp"-->
+        <!--android:layout_alignBottom="@+id/Date"-->
+        <!--android:id="@+id/Details"-->
+        <!--android:text=""-->
+        <!--/>-->
+</RelativeLayout>

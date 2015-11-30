@@ -12,6 +12,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +25,7 @@ import com.nyu.cs9033.travelbuddy.R;
 
 import java.io.InputStream;
 
-public class ProfileActivity extends HomeActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     Bitmap photo = null;
     @Override

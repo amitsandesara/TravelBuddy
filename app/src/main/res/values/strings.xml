@@ -68,5 +68,10 @@
     <string name="createTrip">Create a Trip</string>
     <string name="btncreatetrip">Create Trip</string>
     <string name="title_activity_create_trip">Trips</string>
+    <string name="search">Search</string>
+    <string name="title_activity_default_nav_drawer">DefaultNavDrawer</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>
