@@ -31,8 +31,7 @@ public class Services extends AsyncTask<String, Void, String> {
         NetworkInfo info = null;
         try
         {
-            cm = (ConnectivityManager)
-                    ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+            cm = (ConnectivityManager) ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
             info = cm.getActiveNetworkInfo();
         }
         catch (Exception e)

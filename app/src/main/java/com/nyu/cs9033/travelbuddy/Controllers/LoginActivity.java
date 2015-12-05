@@ -340,8 +340,12 @@ public class LoginActivity extends AppCompatActivity implements
 
 //Updating Profile Information
         UpdateProfile();
+
+        Intent i = new Intent(this, HomeActivity.class);
+        startActivity(i);
+        finish();
 //Updating Layout
-        UpdateLayout(true);
+//        UpdateLayout(true);
 
     }
 
@@ -382,7 +386,8 @@ public class LoginActivity extends AppCompatActivity implements
             spEditor.putString("GDisplayName", personName);
             spEditor.putString("GEmail", email);
             spEditor.putString("GProfilePicURL", personPhoto);
-            spEditor.commit();
+            spEditor.putBoolean("UserSignedIn", true);
+            spEditor.apply();
 
             Log.i(TAG_GooglePlusConnection, personName);
             Log.i(TAG_GooglePlusConnection, email);

@@ -38,8 +38,8 @@ public class CreateTripActivity extends ActionBarActivity implements ActionBar.T
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.drawable.ic_airplanemode_active_black_24dp);
         getSupportActionBar().setTitle("  Trips");
-        CharSequence Titles[]={"View Trip","Create Trip","Edit Trip"};
-        int Numboftabs =3;
+        CharSequence Titles[]={"View Trip","Create Trip","Edit Trip", "Trip Pictures"};
+        int Numboftabs =4;
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 
         // Set up the ViewPager with the sections adapter.
@@ -90,6 +90,10 @@ public class CreateTripActivity extends ActionBarActivity implements ActionBar.T
                     break;
                 case 2:
                     fragment = new Fragment();
+                    break;
+                case 3:
+                    fragment = new UploadTripImages();
+                    break;
             }
             return fragment;
         }
@@ -109,6 +113,8 @@ public class CreateTripActivity extends ActionBarActivity implements ActionBar.T
                     return Titles[1].toString().toUpperCase(l);
                 case 2:
                     return Titles[2].toString().toUpperCase(l);
+                case 3:
+                    return Titles[3].toString().toUpperCase(l);
             }
             return null;
         }

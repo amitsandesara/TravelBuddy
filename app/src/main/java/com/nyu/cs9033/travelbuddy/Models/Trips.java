@@ -7,17 +7,37 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 @ParseClassName("Trips")
 public class Trips extends ParseObject implements Parcelable {
-	
-	// Member fields should exist here, what else do you need for a trip?
+
+    private static final String TAG = "Model Trips ";
+
+    // Member fields should exist here, what else do you need for a trip?
 	// Please add additional fields
 	//private String trip_Name;
 	private String trip_Location;
 	private String trip_Date;
 	private String trip_Details;
-	private String friends;
+//	private String friends;
 	private String createdBy;
-	private byte[] destination;
-    private static final String TAG = "Trips";
+	private String trip_Name;
+    private String trip_Time;
+	private Integer memberCount;
+	private Person[] friends;
+
+    public Person[] getFriends() {
+        return friends;
+    }
+
+    public void setFriends(Person[] friends) {
+		this.friends = friends;
+	}
+
+	public Integer getMemberCount() {
+		return memberCount;
+	}
+
+	public void setMemberCount(int memberCount) {
+		this.memberCount = memberCount;
+	}
 
 
 	public String getTrip_Location() {
@@ -44,20 +64,28 @@ public class Trips extends ParseObject implements Parcelable {
 		this.trip_Date = trip_Date;
 	}
 
-	public String getFriends() {
-		return friends;
-	}
-
-	public void setFriends(String friends) {
-		this.friends = friends;
-	}
-
     public String getCreatedBy() {
         return createdBy;
     }
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getTrip_Time() {
+        return trip_Time;
+    }
+
+    public void setTrip_Time(String trip_Time) {
+        this.trip_Time = trip_Time;
+    }
+
+    public String getTrip_Name() {
+        return trip_Name;
+    }
+
+    public void setTrip_Name(String trip_Name) {
+        this.trip_Name = trip_Name;
     }
 
 	/**
@@ -82,6 +110,9 @@ public class Trips extends ParseObject implements Parcelable {
 	 */
 
 	public Trips(){
+        this.trip_Name = "Trip Name";
+        this.memberCount = 0;
+        this.friends = null;
 	}
 
 	public Trips(Parcel p) {
@@ -89,8 +120,10 @@ public class Trips extends ParseObject implements Parcelable {
 		trip_Location = p.readString();
 		trip_Details = p.readString();
 		trip_Date = p.readString();
-		friends = p.readString();
 		createdBy = p.readString();
+		trip_Name = p.readString();
+        trip_Time = p.readString();
+        memberCount = p.readInt();
 		// TODO - fill in here
 	}
 	
@@ -100,13 +133,16 @@ public class Trips extends ParseObject implements Parcelable {
 	 * @param name  Add arbitrary number of arguments to
 	 * instantiate Trips class based on member variables.
 	 */
-	public Trips(String trip_Location, String trip_Details, String trip_Date, String friends, String createdBy) {
-		//this.trip_Name = trip_Name;
+	public Trips(String trip_Location, String trip_Details, Integer MemberCount, String trip_Date, Person[] Friends, String tripStartTime, String createdBy, String trip_Name) {
+		this.trip_Name = trip_Name;
 		this.trip_Location = trip_Location;
 		this.trip_Details = trip_Details;
 		this.trip_Date = trip_Date;
-		this.friends = friends;
+        this.memberCount = MemberCount;
+		this.friends = Friends;
 		this.createdBy = createdBy;
+        this.trip_Name = trip_Name;
+        this.trip_Time = tripStartTime;
 
 		// TODO - fill in here, please note you must have more arguments here
 	}
@@ -132,9 +168,11 @@ public class Trips extends ParseObject implements Parcelable {
 		dest.writeString(trip_Location);
 		dest.writeString(trip_Details);
 		dest.writeString(trip_Date);
-		dest.writeString(friends);
+        dest.writeParcelableArray(this.friends, 0);
 		dest.writeString(createdBy);
-		// TODO - fill in here 
+        dest.writeString(trip_Name);
+        dest.writeString(trip_Time);
+        dest.writeInt(memberCount);
 	}
 
 	private void applyDefaultValues() {
@@ -144,9 +182,7 @@ public class Trips extends ParseObject implements Parcelable {
 		if (trip_Location == null){
 			trip_Location = "";
 		}
-		if (friends == null){
-			friends = "";
-		}
+
 		if (trip_Date == null){
 			trip_Date = "";
 		}
@@ -168,11 +204,5 @@ public class Trips extends ParseObject implements Parcelable {
 		// Do not implement!
 		return 0;
 	}
-
-
-	public byte[] getDestination() {
-		return destination;
-	}
-
 
 }

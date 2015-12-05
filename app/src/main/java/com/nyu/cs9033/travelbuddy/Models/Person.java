@@ -8,32 +8,41 @@ public class Person implements Parcelable {
 	// Member fields should exist here, what else do you need for a person?
 	// Please add additional fields
 	private String name;
-	private String current_Location;
-	private String friends;
+//	private String current_Location;
+    private String phone;
+    private String email;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getName() {
         return name;
     }
 
     public void setName(String fname) {
-        this.name = name;
+        this.name = fname;
     }
 
-    public String getCurrent_Location() {
-        return current_Location;
-    }
-
-    public void setCurrent_Location(String current_Location) {
-        this.current_Location = current_Location;
-    }
-
-    public String getFriends() {
-        return friends;
-    }
-
-    public void setFriends(String friends) {
-        this.friends = friends;
-    }
+//    public String getCurrent_Location() {
+//        return current_Location;
+//    }
+//
+//    public void setCurrent_Location(String current_Location) {
+//        this.current_Location = current_Location;
+//    }
 
     /**
 	 * Parcelable creator. Do not modify this function.
@@ -57,13 +66,16 @@ public class Person implements Parcelable {
 	 */
 
     public Person() {
-
+        this.email = "";
+        this.name = "User Name";
+        this.phone = "(000)-000-0000";
     }
 
 	public Person(Parcel p) {
 		name = p.readString();
-        current_Location = p.readString();
-        friends = p.readString();
+//        current_Location = p.readString();
+        phone = p.readString();
+        email = p.readString();
 		// TODO - fill in here
 		
 	}
@@ -74,13 +86,12 @@ public class Person implements Parcelable {
 	 * @param name Add arbitrary number of arguments to
 	 * instantiate Person class based on member variables.
 	 */
-	public Person(String name, String current_Location, String friends) {
-		this.name = name;
-        this.current_Location = current_Location;
-        this.friends = friends;
-
-		// TODO - fill in here, please note you must have more arguments here
-	}
+	public Person(String name, String phone, String email) {
+        this.name = name;
+//        this.current_Location = current_Location;
+        this.phone = phone;
+        this.email = email;
+    }
 
 	/**
 	 * Serialize Person object by using writeToParcel.  
@@ -100,18 +111,13 @@ public class Person implements Parcelable {
 		applyDefaultValues();
 
         dest.writeString(name);
-        dest.writeString(current_Location);
-        dest.writeString(friends);
-		// TODO - fill in here
+//        dest.writeString(current_Location);
+        dest.writeString(phone);
+        dest.writeString(email);
 	}
 
     private void applyDefaultValues() {
-        if (friends == null) {
-            friends = "";
-        }
-        if (current_Location == null){
-            current_Location = "";
-        }
+
         if (name == null){
             name = "";
         }
@@ -124,6 +130,7 @@ public class Person implements Parcelable {
 	/**
 	 * Do not implement
 	 */
+
 	@Override
 	public int describeContents() {
 		// Do not implement!

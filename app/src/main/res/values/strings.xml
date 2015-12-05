@@ -45,6 +45,7 @@
         <item>Trips</item>
         <item>Friends</item>
         <item>Profile</item>
+        <item>Photos</item>
         <item>Recommended Trips</item>
         <item>Favorites</item>
         <item>Logout</item>
@@ -73,5 +74,6 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_trip_images">TripImages</string>
 
 </resources>

@@ -156,29 +156,38 @@ public class HomeActivity extends AppCompatActivity implements OnItemClickListen
 
                 case "Friends":
                 {
-                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
+//                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
                     selectTitle(appDrawer[position]);
                 }
 
                 case "Profile":
                 {
 //                    setContentView(R.layout.activity_profile);
-                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
+//                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
                     final Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
                     startActivity(intent);
                     break;
                 }
+                case "Photos":
+                {
+//                    setContentView(R.layout.activity_profile);
+//                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
+                    final Intent intent = new Intent(HomeActivity.this, TripImages.class);
+                    startActivity(intent);
+                    break;
+                }
+
 
                 case "Recommended Trips":
                 {
-                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
+//                    getSupportActionBar().setIcon(R.drawable.ic_contacts_black_24dp);
                     selectTitle(appDrawer[position]);
                     break;
                 }
 
                 case "Favorites":
                 {
-                    getSupportActionBar().setIcon(R.drawable.ic_favorite_black_24dp);
+//                    getSupportActionBar().setIcon(R.drawable.ic_favorite_black_24dp);
                     selectTitle(appDrawer[position]);
                     break;
                 }
@@ -261,7 +270,7 @@ class MyAdapterForDrawer extends BaseAdapter{
 
     String[] drawerItems;
     private Context context;
-    int[] icons = {R.drawable.ic_home_black,R.drawable.ic_airplanemode_active_black_24dp, R.drawable.ic_contacts_black_24dp, R.drawable.ic_account_circle_black_24dp, R.drawable.ic_stars_black_24dp, R.drawable.ic_favorite_black_24dp, R.drawable.ic_power_settings_new_black_24dp};
+    int[] icons = {R.drawable.ic_home_black,R.drawable.ic_airplanemode_active_black_24dp, R.drawable.ic_contacts_black_24dp, R.drawable.ic_account_circle_black_24dp, R.drawable.button_gplus_bg, R.drawable.ic_stars_black_24dp, R.drawable.ic_favorite_black_24dp, R.drawable.ic_power_settings_new_black_24dp};
     public MyAdapterForDrawer(Context context){
         this.context = context;
         drawerItems = context.getResources().getStringArray(R.array.navigationDrawer);
