@@ -2,10 +2,15 @@ package com.nyu.cs9033.travelbuddy.Controllers;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +25,19 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.SaveCallback;
 
-public class UploadTripImages extends Fragment implements View.OnClickListener {
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.*;
+
+public class UploadTripImages extends Fragment  {
 
     public static final String TAG = "Upload Image Fragment";
     Button uploadImage;
     private static final int SELECT_PHOTO = 100;
     private static final int SELECT_PICTURE = 1;
     private static final int RESULT_OK = 50;
-    String selectedImagePath;
-    //ADDED
-    String filemanagerstring;
 
     public UploadTripImages() {
     }
@@ -38,75 +46,65 @@ public class UploadTripImages extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_upload_trip_images, container, false);
+
         uploadImage = (Button) view.findViewById(R.id.uploadbtn);
-        ImageView imageView = (ImageView) view.findViewById(R.id.selectImage);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
+
+        uploadImage.setOnClickListener(new View.OnClickListener() {
+
             public void onClick(View arg0) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(i, SELECT_PHOTO);
+
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+
+
             }
         });
-        uploadImage.setOnClickListener(this);
-//                uploadImage.setOnClickListener(new View.OnClickListener() {
-//
-//                    public void onClick(View arg0) {
-//
-//                        Intent intent = new Intent();
-//                        intent.setType("image/*");
-//                        intent.setAction(Intent.ACTION_GET_CONTENT);
-//                        startActivityForResult(Intent.createChooser(intent,
-//                                "Select Picture"), SELECT_PICTURE);
-//                    }
-//                });
-
         return view;
     }
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (resultCode == RESULT_OK) {
-//            if (requestCode == SELECT_PICTURE) {
-//                Uri selectedImageUri = data.getData();
-//                selectedImagePath = getPath(selectedImageUri);
-//            }
-//        }
-//    }
-//
-//    public String getPath(Uri uri) {
-//
-//        if( uri == null ) {
-//            return null;
-//        }
-    /**
-     * Called when a view has been clicked.
-     *
-     * @param arg0 The view that was clicked.
-     */
+
     @Override
-    public void onClick(View arg0) {
+    public void onActivityResult(int requestCode,int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SELECT_PICTURE && data != null && data.getData() != null) {
 
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, SELECT_PHOTO);
+            Uri uri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+
+                ImageView imageView = (ImageView) getActivity().findViewById(R.id.selectImage);
+                imageView.setImageBitmap(bitmap);
+                uploadToParse(bitmap,uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
 
+    }
 
-        // Create the ParseFile
-        byte[] image = null;
-        ParseFile file = new ParseFile("bg.png", image);
+    //    @Override
+    public void uploadToParse(Bitmap bitmap, Uri uri) {
+        Log.d(TAG, "uploadToParse: image");
+
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 10, stream);
+
+        byte[] image = stream.toByteArray();
+
+        ParseFile file = new ParseFile("myimage.jpeg", image);
 
         final ParseObject imgupload = new ParseObject("Images");
         final ProgressDialog dialog = new ProgressDialog(getContext());
         dialog.setMessage("Uploading Image...");
         dialog.show();
 
-
-        imgupload.put("ImageName", "Test");
         imgupload.put("Images", file);
         imgupload.saveInBackground();
-        file.saveInBackground();
         file.saveInBackground(new SaveCallback() {
             public void done(ParseException e) {
                 if (e == null) {
@@ -128,55 +126,7 @@ public class UploadTripImages extends Fragment implements View.OnClickListener {
                 }
             }
         });
+
     }
 
-
-//    @Override
-//    public String  onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-//        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-//
-//        switch(requestCode) {
-//            case SELECT_PHOTO:
-//                if(resultCode == RESULT_OK){
-//                    Uri selectedImage = imageReturnedIntent.getData();
-//                    InputStream imageStream = getContentResolver().openInputStream(selectedImage);
-//                    Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
-//                    return yourSelectedImage.toString();
-//                }
-//        }
-//    }
-
-
-//    private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
-//
-//        // Decode image size
-//        BitmapFactory.Options o = new BitmapFactory.Options();
-//        o.inJustDecodeBounds = true;
-//        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
-//
-//        // The new size we want to scale to
-//        final int REQUIRED_SIZE = 140;
-//
-//        // Find the correct scale value. It should be the power of 2.
-//        int width_tmp = o.outWidth, height_tmp = o.outHeight;
-//        int scale = 1;
-//        while (true) {
-//            if (width_tmp / 2 < REQUIRED_SIZE
-//                    || height_tmp / 2 < REQUIRED_SIZE) {
-//                break;
-//            }
-//            width_tmp /= 2;
-//            height_tmp /= 2;
-//            scale *= 2;
-//        }
-//
-//        // Decode with inSampleSize
-//        BitmapFactory.Options o2 = new BitmapFactory.Options();
-//        o2.inSampleSize = scale;
-//        return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
-//
-//    }
-
-
 }
-
