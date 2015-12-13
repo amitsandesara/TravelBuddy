@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -16,9 +17,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -43,7 +48,7 @@ public class CreateTrip extends Fragment implements View.OnClickListener {
 
     private SimpleDateFormat dateFormatter;
     private DatePickerDialog DatePickerDialog;
-    EditText trip_Location;
+    AutoCompleteTextView trip_Location;
     EditText trip_Details;
     EditText _dateOfTrip;
     EditText _friends;
@@ -71,7 +76,9 @@ public class CreateTrip extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_trip, container, false);
-        trip_Location = (EditText) view.findViewById(R.id.tripLocation);
+        trip_Location = (AutoCompleteTextView) view.findViewById(R.id.tripLocation);
+        trip_Location.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.list_item));
+
         trip_Details = (EditText) view.findViewById(R.id.tripDetails);
         _dateOfTrip = (EditText) view.findViewById(R.id.tripDate);
         createTrip = (Button) view.findViewById(R.id.submitCreateTrip);
@@ -349,26 +356,26 @@ public class CreateTrip extends Fragment implements View.OnClickListener {
                         }, 1000);
 
                     }
-                else
-                {
-                    // Failure!
+                    else
+                    {
+                        // Failure!
 
-                    dialog.dismiss();
-                    final Toast toast = Toast.makeText(getContext(), "Erroe occurred", Toast.LENGTH_SHORT);
-                    Log.i(TAG, "Check Network Status");
-                    Log.i("Parse Exception:- ", String.valueOf(e));
-                    toast.show();
+                        dialog.dismiss();
+                        final Toast toast = Toast.makeText(getContext(), "Erroe occurred", Toast.LENGTH_SHORT);
+                        Log.i(TAG, "Check Network Status");
+                        Log.i("Parse Exception:- ", String.valueOf(e));
+                        toast.show();
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            toast.cancel();
-                        }
-                    }, 1000);
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                toast.cancel();
+                            }
+                        }, 1000);
+                    }
                 }
-                }
-        });
+            });
         }
         else
         {
@@ -391,5 +398,63 @@ public class CreateTrip extends Fragment implements View.OnClickListener {
 
     public void cancelTrip() {
 
+    }
+}
+
+class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
+
+    ArrayList<String> resultList;
+
+    Context mContext;
+    int mResource;
+
+    PlaceAPI mPlaceAPI = new PlaceAPI();
+
+    public PlacesAutoCompleteAdapter(Context context, int resource) {
+        super(context, resource);
+
+        mContext = context;
+        mResource = resource;
+    }
+
+    @Override
+    public int getCount() {
+        // Last item will be the footer
+        return resultList.size();
+    }
+
+    @Override
+    public String getItem(int position) {
+        return resultList.get(position);
+    }
+
+    @Override
+    public Filter getFilter() {
+        Filter filter = new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults filterResults = new FilterResults();
+                if (constraint != null) {
+                    resultList = mPlaceAPI.autocomplete(constraint.toString());
+
+                    filterResults.values = resultList;
+                    filterResults.count = resultList.size();
+                }
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, Filter.FilterResults results) {
+                if (results != null && results.count > 0) {
+                    notifyDataSetChanged();
+                }
+                else {
+                    notifyDataSetInvalidated();
+                }
+            }
+        };
+
+        return filter;
     }
 }
