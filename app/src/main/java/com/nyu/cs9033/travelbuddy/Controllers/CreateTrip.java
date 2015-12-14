@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -19,7 +22,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -27,8 +29,10 @@ import android.widget.Toast;
 import com.nyu.cs9033.travelbuddy.Models.Person;
 import com.nyu.cs9033.travelbuddy.Models.Trips;
 import com.nyu.cs9033.travelbuddy.R;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import java.text.DateFormat;
@@ -51,10 +55,14 @@ public class CreateTrip extends Fragment implements View.OnClickListener {
     EditText trip_Time;
     EditText trip_Name;
     Button addfriends;
+    Button updateTrip;
     TextView invitedFriends;
     public String formattedDate;
     public String formattedTime;
     public String formattedDateTime;
+    String TripID = "";
+    int Members = 0;
+    boolean membersInit = false;
 
     Button createTrip;
     DateFormat df = new SimpleDateFormat(" MMM dd, yyyy, HH:mm");
@@ -80,6 +88,24 @@ public class CreateTrip extends Fragment implements View.OnClickListener {
         trip_Time = (EditText) view.findViewById(R.id.tripStartTime);
         invitedFriends = (TextView) view.findViewById(R.id.Friendsnumber);
         addfriends = (Button) view.findViewById(R.id.addfriends);
+        Context context = getActivity();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        Boolean status = sp.getBoolean("CreateTrip", false);
+        Log.d("Status boolean:- ", status+"");
+        if (status){
+            updateUI(sp);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean("CreateTrip", false);
+            editor.commit();
+        }
+
+
+//        editor.putString("Trip_Name", intent.getStringExtra("TripName"));
+//        editor.putString("Trip_Date", intent.getStringExtra("TripDate"));
+//        editor.putString("Trip_Time", intent.getStringExtra("TripTime"));
+//        editor.putString("Trip_Details", intent.getStringExtra("TripDetails"));
+//        editor.putString("Trip_Location", intent.getStringExtra("TripLocation"));
+
         addfriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +125,30 @@ public class CreateTrip extends Fragment implements View.OnClickListener {
         createTrip();
 
         return view;
+    }
+
+    private void updateUI(SharedPreferences sp) {
+
+        trip_Location.setText(sp.getString("Trip_Location", ""));
+        trip_Details.setText(sp.getString("Trip_Details", ""));
+        trip_Name.setText(sp.getString("Trip_Name", ""));
+        trip_Time.setText(sp.getString("Trip_Time", ""));
+        invitedFriends.setText(sp.getString("Trip_Friends", ""));
+        String date = sp.getString("Trip_Date", "");
+        TripID = sp.getString("Trip_ID", "");
+        Members = sp.getInt("MemberCount", 0);
+        membersInit = true;
+        Log.d("TripDate", date);
+        if (trip_Location.getText().length() > 0 || trip_Details.getText().length() > 0 || trip_Name.getText().length() > 0)
+            createTrip.setText("Update Trip");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-mm-yyyy", Locale.US);
+        try {
+            Date tempDate = simpleDateFormat.parse(date);
+            _dateOfTrip.setText(tempDate.toString());
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -252,7 +302,10 @@ public class CreateTrip extends Fragment implements View.OnClickListener {
                     objCreateTrip.setFriends(Per.toArray(new Person[Per.toArray().length]));
                     objCreateTrip.setTrip_Name(tripName);
                     objCreateTrip.setTrip_Time(formattedDateTime);
-                    objCreateTrip.setMemberCount(Per.toArray().length);
+                    if (membersInit)
+                        objCreateTrip.setMemberCount(Members);
+                    else
+                        objCreateTrip.setMemberCount(Per.toArray().length);
 //                    objCreateTrip.setCreatedBy(creatorOfTrip);
                     saveTrip(objCreateTrip);
                 }
@@ -296,100 +349,158 @@ public class CreateTrip extends Fragment implements View.OnClickListener {
         final ProgressDialog dialog = new ProgressDialog(getContext());
         dialog.setMessage("Creating Trip...");
         dialog.show();
-        final ProgressBar mSpinner = new ProgressBar(getContext());
-
+        SharedPreferences googlePlusProfile = getActivity().getSharedPreferences("Google+", Context.MODE_PRIVATE);
+        final String userName = googlePlusProfile.getString("GDisplayName", "");
 
         final Trips gameScore = new Trips();
         String objectId;
-//        final ParseObject gameScore = new ParseObject("Trips");
-        gameScore.put("CreatedBy", "Amit Sandesara");
-        gameScore.put("DetailsOfTrip", trip.getTrip_Details());
-        gameScore.put("Location", trip.getTrip_Location());
-        gameScore.put("TripName", trip.getTrip_Name());
-        gameScore.put("TripDateTime", trip.getTrip_Time());
-//        gameScore.put("createdAt", date);
-//        gameScore.put("FriendsAwatingAcceptance", trip.getFriends());
-//        gameScore.put("TripDate", trip.getTrip_Date());
-        boolean networkState = Services.netConnect(getContext());
-        Log.i("Network Status", String.valueOf(networkState));
-        networkState = true;
-        if (networkState) {
-            gameScore.saveInBackground(new SaveCallback() {
-                public void done(ParseException e) {
+        if (TripID != "") {
+            ParseQuery<Trips> query = ParseQuery.getQuery("Trips");
+
+// Retrieve the object by id
+            query.getInBackground(TripID, new GetCallback<Trips>() {
+                public void done(Trips gameScore, ParseException e) {
                     if (e == null) {
-                        // Success!
-                        String objectId = gameScore.getObjectId();
-                        Log.i(TAG, "Object ID- " + objectId);
-                        int i = 0;
-                        for (Person p : Per){
-                            if (i < Per.size()){
-                                ParseObject person = new ParseObject("Person");
-                                person.put("Trip_ID", objectId);
-                                person.put("PersonName", p.getName());
-                                person.put("PersonPhone", p.getPhone());
-                                person.put("PersonEmail", p.getEmail());
-                                person.saveInBackground();
-                                Log.i(TAG, " Person is:- "+ p.getName()+ p.getPhone()+p.getEmail());
+                        // Now let's update it with some new data. In this case, only cheatMode and score
+                        // will get sent to the Parse Cloud. playerName hasn't changed.
+                        gameScore.put("CreatedBy", userName);
+                        gameScore.put("DetailsOfTrip", trip_Details.getText().toString());
+                        gameScore.put("Location", trip_Location.getText().toString());
+                        gameScore.put("TripName", trip_Name.getText().toString());
+                        gameScore.put("TripDateTime", formattedDateTime);
+                        gameScore.put("MemberCount", Members);
+                        gameScore.saveInBackground(new SaveCallback() {
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    // Success
+                                    final Toast toast = Toast.makeText(getContext(), "Trips Updated Successfully", Toast.LENGTH_SHORT);
+                                    toast.show();
+
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            toast.cancel();
+                                            Intent i = new Intent(getContext(), CreateTripActivity.class);
+                                            startActivity(i);
+                                        }
+                                    }, 1000);
+                                    dialog.hide();
+                                }
                             }
-                            i++;
-                        }
-
-                        dialog.dismiss();
-                        final Toast toast = Toast.makeText(getContext(), "Trips Created Successfully", Toast.LENGTH_SHORT);
+                        });
+                    }
+                    else{
+                        final Toast toast = Toast.makeText(getContext(), "No Internet Connectivity", Toast.LENGTH_SHORT);
                         toast.show();
-
+                        Log.i(TAG, "No Internet Connectivity");
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 toast.cancel();
-                                Intent i = new Intent(getContext(), CreateTripActivity.class);
-                                startActivity(i);
                             }
                         }, 1000);
-
                     }
-                else
-                {
-                    // Failure!
+                }
+            });
+            return true;
+        } else {
 
-                    dialog.dismiss();
-                    final Toast toast = Toast.makeText(getContext(), "Erroe occurred", Toast.LENGTH_SHORT);
-                    Log.i(TAG, "Check Network Status");
-                    Log.i("Parse Exception:- ", String.valueOf(e));
-                    toast.show();
+//        final ParseObject gameScore = new ParseObject("Trips");
+            gameScore.put("CreatedBy", userName);
+            gameScore.put("DetailsOfTrip", trip.getTrip_Details());
+            gameScore.put("Location", trip.getTrip_Location());
+            gameScore.put("TripName", trip.getTrip_Name());
+            gameScore.put("TripDateTime", trip.getTrip_Time());
+            gameScore.put("MemberCount", trip.getMemberCount());
+//        gameScore.put("createdAt", date);
+//        gameScore.put("FriendsAwatingAcceptance", trip.getFriends());
+//        gameScore.put("TripDate", trip.getTrip_Date());
+            boolean networkState = Services.netConnect(getContext());
+            Log.i("Network Status", String.valueOf(networkState));
+//        networkState = true;
+            if (networkState) {
+                gameScore.saveInBackground(new SaveCallback() {
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            // Success!
+                            String objectId = gameScore.getObjectId();
+                            Log.i(TAG, "Object ID- " + objectId);
+                            int i = 0;
+                            for (Person p : Per) {
+                                if (i < Per.size()) {
+                                    ParseObject person = new ParseObject("Person");
+                                    person.put("Trip_ID", objectId);
+                                    person.put("PersonName", p.getName());
+                                    person.put("PersonPhone", p.getPhone());
+                                    person.put("PersonEmail", p.getEmail());
+                                    person.saveInBackground();
+                                    Log.i(TAG, " Person is:- " + p.getName() + p.getPhone() + p.getEmail());
+                                }
+                                i++;
+                            }
 
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            toast.cancel();
+                            dialog.dismiss();
+                            final Toast toast = Toast.makeText(getContext(), "Trips Created Successfully", Toast.LENGTH_SHORT);
+                            toast.show();
+
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    toast.cancel();
+                                    Intent i = new Intent(getContext(), CreateTripActivity.class);
+                                    startActivity(i);
+                                }
+                            }, 1000);
+
+                        } else {
+                            // Failure!
+
+                            dialog.dismiss();
+                            final Toast toast = Toast.makeText(getContext(), "Error occurred", Toast.LENGTH_SHORT);
+                            Log.i(TAG, "Check Network Status");
+                            Log.i("Parse Exception:- ", String.valueOf(e));
+                            toast.show();
+
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    toast.cancel();
+                                }
+                            }, 1000);
                         }
-                    }, 1000);
-                }
-                }
-        });
+                    }
+                });
+            } else {
+                final Toast toast = Toast.makeText(getContext(), "No Internet Connectivity", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.i(TAG, "No Internet Connectivity");
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        toast.cancel();
+                    }
+                }, 1000);
+            }
+            return true;
         }
-        else
-        {
-            final Toast toast = Toast.makeText(getContext(), "No Internet Connectivity", Toast.LENGTH_SHORT);
-            toast.show();
-            Log.i(TAG, "No Internet Connectivity");
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    toast.cancel();
-                }
-            }, 1000);
-        }
-        return true;
     }
-
-
-
 
     public void cancelTrip() {
-
+        final Toast toast = Toast.makeText(getContext(), "Trip not created", Toast.LENGTH_SHORT);
+        toast.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toast.cancel();
+            }
+        }, 1000);
     }
 }
+
+
