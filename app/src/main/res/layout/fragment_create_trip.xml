@@ -39,7 +39,7 @@
         android:layout_marginBottom="10sp"
         android:textColor="@android:color/white"/>
 
-    <EditText
+    <AutoCompleteTextView
         android:layout_width="240sp"
         android:layout_height="wrap_content"
         android:hint="Trip Location"
