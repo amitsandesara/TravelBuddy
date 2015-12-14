@@ -22,6 +22,7 @@ public class Trips extends ParseObject implements Parcelable {
     private String trip_Time;
 	private Integer memberCount;
 	private Person[] friends;
+	private String TripID;
 
     public Person[] getFriends() {
         return friends;
@@ -113,6 +114,7 @@ public class Trips extends ParseObject implements Parcelable {
         this.trip_Name = "Trip Name";
         this.memberCount = 0;
         this.friends = null;
+        this.TripID = null;
 	}
 
 	public Trips(Parcel p) {
@@ -123,7 +125,9 @@ public class Trips extends ParseObject implements Parcelable {
 		createdBy = p.readString();
 		trip_Name = p.readString();
         trip_Time = p.readString();
+        TripID = p.readString();
         memberCount = p.readInt();
+        TripID = p.readString();
 		// TODO - fill in here
 	}
 	
@@ -173,6 +177,7 @@ public class Trips extends ParseObject implements Parcelable {
         dest.writeString(trip_Name);
         dest.writeString(trip_Time);
         dest.writeInt(memberCount);
+        dest.writeString(TripID);
 	}
 
 	private void applyDefaultValues() {
@@ -186,10 +191,11 @@ public class Trips extends ParseObject implements Parcelable {
 		if (trip_Date == null){
 			trip_Date = "";
 		}
-        if (createdBy == null)
-        {
+        if (createdBy == null) {
             createdBy = "";
         }
+        if (TripID == null)
+            TripID = "";
 	}
 
 	/**
@@ -205,4 +211,11 @@ public class Trips extends ParseObject implements Parcelable {
 		return 0;
 	}
 
+	public String getTripID() {
+		return TripID;
+	}
+
+	public void setTripID(String tripID) {
+		TripID = tripID;
+	}
 }

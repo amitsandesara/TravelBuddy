@@ -3,7 +3,11 @@ package com.nyu.cs9033.travelbuddy.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Person implements Parcelable {
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
+@ParseClassName("Person")
+public class Person extends ParseObject implements Parcelable {
 	
 	// Member fields should exist here, what else do you need for a person?
 	// Please add additional fields

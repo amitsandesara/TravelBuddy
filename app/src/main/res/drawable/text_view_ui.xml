@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+    <!-- use this for transparent -->
+    <!--<solid android:color="#00000000" />-->
+    <!-- use this for a background colour -->
+    <gradient
+        android:startColor="#5eb9ff"
+        android:endColor="#fff" />
+    <!--<solid android:color="#e4e7ea" />-->
+    <stroke android:width="0dip"
+        android:color="#080061" />
+
+    <padding
+        android:bottomRightRadius="15dp"
+        android:bottomLeftRadius="15dp"
+        android:topLeftRadius="15dp"
+        android:topRightRadius="15dp"/>
+</shape>
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >-->
+    <!--&lt;!&ndash; use this for transparent &ndash;&gt;-->
+     <!--&lt;!&ndash;<solid android:color="#00000000" />&ndash;&gt;-->
+    <!--&lt;!&ndash; use this for a background colour &ndash;&gt;-->
+    <!--<solid android:color="#e4e7ea" />-->
+    <!--<stroke android:width="0dip"-->
+        <!--android:color="#080061" />-->
+    <!--<corners-->
+        <!--android:bottomRightRadius="15dp"-->
+        <!--android:bottomLeftRadius="15dp"-->
+        <!--android:topLeftRadius="15dp"-->
+        <!--android:topRightRadius="15dp"/>-->
+<!--</shape>-->
+

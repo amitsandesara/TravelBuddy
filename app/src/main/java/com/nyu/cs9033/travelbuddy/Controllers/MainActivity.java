@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import com.nyu.cs9033.travelbuddy.Models.Person;
 import com.nyu.cs9033.travelbuddy.Models.Trips;
 import com.nyu.cs9033.travelbuddy.R;
 import com.parse.Parse;
@@ -22,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 // Enable Local Datastore.
-        ParseObject.registerSubclass(Trips.class);
+
         Parse.enableLocalDatastore(this);
+        ParseObject.registerSubclass(Trips.class);
+        ParseObject.registerSubclass(Person.class);
         Parse.initialize(this, "ME4oPzD9NyAwKrGB8hNnkQCCRbYjdb8Bd2YShI6B", "IvKnCjeM6ulQYVs6ZWd9n0V9tqgWdgFJsEBOHiCe");
         ParseInstallation.getCurrentInstallation().saveInBackground();
 

@@ -3,7 +3,9 @@ package com.nyu.cs9033.travelbuddy.Controllers;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -28,7 +30,7 @@ public class CreateTripActivity extends ActionBarActivity implements ActionBar.T
     private ActionBarDrawerToggle drawerListner;
     CharSequence Titles[]; // This will Store the Titles of the Tabs which are Going to be passed when ViewPagerAdapter is created
     int NumbOfTabs; // Store the number of tabs, this will also be passed when the ViewPagerAdapter is created
-
+    Boolean create = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +40,8 @@ public class CreateTripActivity extends ActionBarActivity implements ActionBar.T
         setSupportActionBar(toolbar);
         getSupportActionBar().setIcon(R.drawable.ic_airplanemode_active_black_24dp);
         getSupportActionBar().setTitle("  Trips");
-        CharSequence Titles[]={"View Trip","Create Trip","Edit Trip", "Trip Pictures"};
-        int Numboftabs =4;
+        CharSequence Titles[]={"View Trip","Create Trip", "Trip Pictures"};
+        int Numboftabs = 3;
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), Titles, Numboftabs);
 
         // Set up the ViewPager with the sections adapter.
@@ -51,6 +53,24 @@ public class CreateTripActivity extends ActionBarActivity implements ActionBar.T
         mSlidingTabLayout.setViewPager(mViewPager);
 
 
+        Intent intent = getIntent();
+        create = intent.getBooleanExtra("CreateTrip", false);
+        if (create){
+            mViewPager.setCurrentItem(1);
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("Trip_Name", intent.getStringExtra("TripName"));
+            editor.putString("Trip_Date", intent.getStringExtra("TripDate"));
+            editor.putString("Trip_Time", intent.getStringExtra("TripTime"));
+            editor.putString("Trip_Details", intent.getStringExtra("TripDetails"));
+            editor.putString("Trip_Location", intent.getStringExtra("TripLocation"));
+            editor.putString("Trip_Friends", intent.getStringExtra("Friends"));
+            editor.putString("Trip_ID", intent.getStringExtra("TripID"));
+            editor.putInt("MemberCount", intent.getIntExtra("Members", 0));
+            editor.putBoolean("CreateTrip", true);
+            editor.commit();
+
+        }
 //        trip_Location = (EditText) findViewById(R.id.tripLocation);
 //        trip_Details = (EditText) findViewById(R.id.tripDetails);
 //        _dateOfTrip = (EditText) findViewById(R.id.tripDate);
@@ -89,9 +109,9 @@ public class CreateTripActivity extends ActionBarActivity implements ActionBar.T
                     fragment = new CreateTrip();
                     break;
                 case 2:
-                    fragment = new Fragment();
-                    break;
-                case 3:
+//                    fragment = new EditTrip();
+//                    break;
+//                case 3:
                     fragment = new UploadTripImages();
                     break;
             }
